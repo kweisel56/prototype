@@ -1,0 +1,17 @@
+/*
+To run the script from the DB machine, use: Sqlcmd -S localhost -i C:\Path\To\File\setupMixedMode.sql
+To run this script remotely from PowerShell, use: Invoke-Sqlcmd -S 10.248.248.36 -i C:\Path\To\File\setupMixedMode.sql
+*/
+
+USE [master]
+GO
+EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2
+GO
+CREATE LOGIN [localhost>\superadmin] FROM WINDOWS;  
+GO
+!!NET STOP SQLSERVER
+!!NET STOP SQLSERVERAGENT
+GO
+!!NET START SQLSERVER
+!!NET START SQLSERVER
+GO
